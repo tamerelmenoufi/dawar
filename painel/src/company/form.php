@@ -1,5 +1,5 @@
 <?php
-        include("{$_SERVER['DOCUMENT_ROOT']}/painel/lib/includes.php");
+        include("{$_SERVER['DOCUMENT_ROOT']}/dawar/painel/lib/includes.php");
 
 
     if($_POST['action'] == 'save'){

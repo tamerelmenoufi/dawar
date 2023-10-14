@@ -1,5 +1,5 @@
 <?php
-        include("{$_SERVER['DOCUMENT_ROOT']}/painel/lib/includes.php");
+        include("{$_SERVER['DOCUMENT_ROOT']}/dawar/painel/lib/includes.php");
 
         $query = "SELECT * FROM `company_financial`
                     where company = '{$_POST['id']}' and del != '1' and payday > 0 and
