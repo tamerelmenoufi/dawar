@@ -13,8 +13,8 @@
 
     include("dicionary_".(($_SESSION['lng'])?$_SESSION['lng']:'en').".php");
 
-    $localPainel = $_SERVER["REQUEST_SCHEME"]."://dawar.yobom.com.br/painel/";
-    $localSite = $_SERVER["REQUEST_SCHEME"]."://dawar.yobom.com.br/";
+    $localPainel = "https://dawar.yobom.com.br/painel/";
+    $localSite = "https://dawar.yobom.com.br/";
 
     if($_GET['ln']){
         $_SESSION['lng'] = $_GET['ln'];
