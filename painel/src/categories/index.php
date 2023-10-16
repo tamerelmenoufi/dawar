@@ -2,12 +2,12 @@
         include("{$_SERVER['DOCUMENT_ROOT']}/dawar/painel/lib/includes.php");
 
     if($_POST['delete']){
-      $query = "delete from categories where id = '{$_POST['delete']}'";
+      $query = "delete from aux_categorias where codigo = '{$_POST['delete']}'";
       mysqli_query($con, $query);
     }
 
-    if($_POST['status']){
-      $query = "update categories set status = '{$_POST['opt']}' where id = '{$_POST['status']}'";
+    if($_POST['situacao']){
+      $query = "update aux_categorias set situacao = '{$_POST['opt']}' where codigo = '{$_POST['situacao']}'";
       mysqli_query($con, $query);
       exit();
     }
@@ -51,22 +51,22 @@
               </thead>
               <tbody>
                 <?php
-                  $query = "select * from categories order by category asc";
+                  $query = "select * from categorias order by nome asc";
                   $result = mysqli_query($con, $query);
                   while($d = mysqli_fetch_object($result)){
                 ?>
                 <tr>
-                  <td class="w-100"><?=$d->category?></td>
+                  <td class="w-100"><?=$d->nome?></td>
                   <td>
                     <div class="form-check form-switch">
-                      <input class="form-check-input status" type="checkbox" <?=(($d->status)?'checked':false)?> category="<?=$d->id?>">
+                      <input class="form-check-input status" type="checkbox" <?=(($d->situacao)?'checked':false)?> category="<?=$d->codigo?>">
                     </div>
                   </td>
                   <td class="text-end">
                     <button
                       class="btn btn-primary"
                       style="margin-bottom:1px"
-                      edit="<?=$d->id?>"
+                      edit="<?=$d->codigo?>"
                       data-bs-toggle="offcanvas"
                       href="#offcanvasRight"
                       role="button"
@@ -74,7 +74,7 @@
                     >
                       <?=$Dic['Edit']?>
                     </button>
-                    <button class="btn btn-danger" delete="<?=$d->id?>">
+                    <button class="btn btn-danger" delete="<?=$d->codigo?>">
                       <?=$Dic['Delete']?>
                     </button>
                   </td>
@@ -107,12 +107,12 @@
         })
 
         $("button[edit]").click(function(){
-            id = $(this).attr("edit");
+            codigo = $(this).attr("edit");
             $.ajax({
                 url:"src/categories/form.php",
                 type:"POST",
                 data:{
-                  id
+                  codigo
                 },
                 success:function(dados){
                     $(".MenuRight").html(dados);
@@ -149,7 +149,7 @@
 
         $(".status").change(function(){
 
-          status = $(this).attr("category");
+          situacao = $(this).attr("category");
           opt = false;
 
           if($(this).prop("checked") == true){
@@ -163,7 +163,7 @@
               url:"src/categories/index.php",
               type:"POST",
               data:{
-                  status,
+                  situacao,
                   opt
               },
               success:function(dados){
