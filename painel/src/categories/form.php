@@ -86,11 +86,11 @@
 
                 e.preventDefault();
 
-                var id = $('#id').val();
+                var codigo = $('#codigo').val();
                 var filds = $(this).serializeArray();
 
                 if (id) {
-                    filds.push({name: 'id', value: id})
+                    filds.push({name: 'codigo', value: codigo})
                 }
 
                 filds.push({name: 'action', value: 'save'})
