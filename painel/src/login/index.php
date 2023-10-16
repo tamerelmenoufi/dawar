@@ -5,7 +5,7 @@
         $login = $_POST['login'];
         $password = md5($_POST['password']);
 
-        $query = "select * from usuarios where login = '{$login}' and senha = '{$password}'";
+        $query = "select * from usuarios where login = '{$login}' and senha = '{$password}' and status = '1' and deletado != '1'";
         $result = mysqli_query($con, $query);
 
         if(mysqli_num_rows($result)){
@@ -247,7 +247,7 @@
                 error:function(error){
                     console.log(error)
                     $.alert({
-                        content:'<?=$Dic['An error occurred.<br>Please check login address.']?> Erro aqui',
+                        content:'<?=$Dic['An error occurred.<br>Please check login address.']?><br><br>'+error.responseText,
                         title:false,
                         buttons:{
                             '<?=$Dic['ok']?>':function(){
