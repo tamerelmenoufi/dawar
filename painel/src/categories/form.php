@@ -89,7 +89,7 @@
                 var codigo = $('#codigo').val();
                 var filds = $(this).serializeArray();
 
-                if (id) {
+                if (codigo) {
                     filds.push({name: 'codigo', value: codigo})
                 }
 
