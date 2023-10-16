@@ -49,7 +49,7 @@
                 </thead>
                 <tbody>
                   <?php
-                    $query = "select * from empresas order by name asc";
+                    $query = "select * from empresas order by nome asc";
                     $result = mysqli_query($con, $query);
                     while($d = mysqli_fetch_object($result)){
                   ?>
