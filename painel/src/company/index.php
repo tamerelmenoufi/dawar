@@ -2,12 +2,12 @@
         include("{$_SERVER['DOCUMENT_ROOT']}/dawar/painel/lib/includes.php");
 
     if($_POST['delete']){
-      $query = "delete from company where id = '{$_POST['delete']}'";
+      $query = "delete from empresas where codigo = '{$_POST['delete']}'";
       mysqli_query($con, $query);
     }
 
-    if($_POST['status']){
-      $query = "update company set status = '{$_POST['opt']}' where id = '{$_POST['status']}'";
+    if($_POST['situacao']){
+      $query = "update empresas set situacao = '{$_POST['opt']}' where codigo = '{$_POST['situacao']}'";
       mysqli_query($con, $query);
       exit();
     }
@@ -42,7 +42,6 @@
               <table class="table table-striped table-hover">
                 <thead>
                   <tr>
-                    <th scope="col"><?=$Dic['Category']?></th>
                     <th scope="col"><?=$Dic['Name']?></th>
                     <th scope="col"><?=$Dic['Status']?></th>
                     <th scope="col" class="text-end"><?=$Dic['Actions']?></th>
@@ -50,17 +49,16 @@
                 </thead>
                 <tbody>
                   <?php
-                    $query = "select a.*, b.category as category_name from company a left join categories b on a.category = b.id order by b.category asc, a.name asc";
+                    $query = "select * from empresas order by name asc";
                     $result = mysqli_query($con, $query);
                     while($d = mysqli_fetch_object($result)){
                   ?>
                   <tr>
-                    <td><?=$d->category_name?></td>
-                    <td class="w-100"><?=$d->name?></td>
+                    <td class="w-100"><?=$d->nome?></td>
                     <td>
 
                     <div class="form-check form-switch">
-                      <input class="form-check-input status" type="checkbox" <?=(($d->status)?'checked':false)?> user="<?=$d->id?>">
+                      <input class="form-check-input status" type="checkbox" <?=(($d->situacao)?'checked':false)?> user="<?=$d->codigo?>">
                     </div>
 
                     </td>
@@ -71,17 +69,17 @@
                           <?=$Dic['Options']?>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                          <!-- <li><button class="dropdown-item" type="button" target="information.php" identification="<?=$d->id?>"><?=$Dic['Information']?></button></li> -->
+                          <!-- <li><button class="dropdown-item" type="button" target="information.php" identification="<?=$d->id?>"><?=$Dic['Information']?></button></li>
                           <li><button class="dropdown-item" type="button" target="cycle.php" identification="<?=$d->id?>"><?=$Dic['Cycles']?></button></li>
                           <li><button class="dropdown-item" type="button" target="training.php" identification="<?=$d->id?>"><?=$Dic['Training']?></button></li>
-                          <li><button class="dropdown-item" type="button" target="financial.php" identification="<?=$d->id?>"><?=$Dic['Financial']?></button></li>
+                          <li><button class="dropdown-item" type="button" target="financial.php" identification="<?=$d->id?>"><?=$Dic['Financial']?></button></li> -->
                         </ul>
                       </div>
 
                       <button
                         class="btn btn-primary"
                         style="margin-bottom:1px"
-                        edit="<?=$d->id?>"
+                        edit="<?=$d->codigo?>"
                         data-bs-toggle="offcanvas"
                         href="#offcanvasRight"
                         role="button"
@@ -90,7 +88,7 @@
                       <?=$Dic['Edit']?>
                       </button>
 
-                      <button class="btn btn-danger" delete="<?=$d->id?>">
+                      <button class="btn btn-danger" delete="<?=$d->codigo?>">
                       <?=$Dic['Delete']?>
                       </button>
 
@@ -124,12 +122,12 @@
         })
 
         $("button[edit]").click(function(){
-            id = $(this).attr("edit");
+            codigo = $(this).attr("edit");
             $.ajax({
                 url:"src/company/form.php",
                 type:"POST",
                 data:{
-                  id
+                  codigo
                 },
                 success:function(dados){
                     $(".MenuRight").html(dados);
@@ -167,7 +165,7 @@
 
         $(".status").change(function(){
 
-            status = $(this).attr("user");
+            situacao = $(this).attr("user");
             opt = false;
 
             if($(this).prop("checked") == true){
@@ -181,7 +179,7 @@
                 url:"src/company/index.php",
                 type:"POST",
                 data:{
-                    status,
+                    situacao,
                     opt
                 },
                 success:function(dados){
@@ -192,20 +190,5 @@
         });
 
 
-        $("button[target]").click(function(){
-          identification = $(this).attr("identification");
-          target = $(this).attr("target");
-          $.ajax({
-              url:`src/company/${target}`,
-              type:"POST",
-              data:{
-                id:identification
-              },
-              success:function(dados){
-                // $.alert(dados);
-                $("#pageHome").html(dados);
-              }
-          })
-        })
     })
 </script>

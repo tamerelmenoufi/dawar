@@ -7,7 +7,7 @@
         $data = $_POST;
         $attr = [];
 
-        unset($data['id']);
+        unset($data['codigo']);
         unset($data['action']);
 
         $base64Image = [];
@@ -35,18 +35,18 @@
 
         $attr = implode(', ', $attr);
 
-        if($_POST['id']){
-            $query = "update company set {$attr} where id = '{$_POST['id']}'";
+        if($_POST['codigo']){
+            $query = "update empresas set {$attr} where codigo = '{$_POST['id']}'";
             $exec = mysqli_query($con, $query);
-            $id = $_POST['id'];
+            $codigo = $_POST['codigo'];
         }else{
-            $query = "insert into company set registration_date = NOW(), {$attr}";
+            $query = "insert into empresas set {$attr}";
             $exec = mysqli_query($con, $query);
-            $id = mysqli_insert_id($con);
+            $codigo = mysqli_insert_id($con);
         }
 
         if($exec and $base64Image){
-            $local = "../volume/{$id}";
+            $local = "../volume/{$codigo}";
             if(!is_dir($local)) mkdir($local);
             foreach($base64Image as $ind => $img){
                 $img = explode("base64,", $img);
@@ -57,7 +57,7 @@
 
         $return = [
             'status' => true,
-            'id' => $id." - ".$query
+            'codigo' => $codigo." - ".$query
         ];
 
         echo json_encode($return);
@@ -66,7 +66,7 @@
     }
 
 
-    $query = "select * from company where id = '{$_POST['id']}'";
+    $query = "select * from empresas where codigo = '{$_POST['codigo']}'";
     $result = mysqli_query($con, $query);
     $d = mysqli_fetch_object($result);
 ?>
@@ -84,27 +84,6 @@
         <div class="row">
             <div class="col">
 
-                <div class="form-floating mb-3">
-                    <select name="category" class="form-control" id="category">
-                        <option value="" >::<?=$Dic['Selection']?>::</option>
-                        <?php
-                        $q = "select * from categories where status = '1' order by category";
-                        $r = mysqli_query($con, $q);
-                        while($s = mysqli_fetch_object($r)){
-                        ?>
-                        <option value="<?=$s->id?>" <?=(($s->id == $d->category)?'selected':false)?>><?=$s->category?></option>
-                        <?php
-                        }
-                        ?>
-                    </select>
-                    <label for="category"><?=$Dic['Category']?></label>
-                </div>
-
-                <!-- <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="name" name="name" placeholder="<?=$Dic['Full Name of Company']?>" value="<?=$d->name?>">
-                    <label for="nome"><?=$Dic['Name']?>*</label>
-                </div> -->
-
                 <div class="input-group mb-3">
                     <?php
                     if($d->logo){
@@ -114,8 +93,8 @@
                     }
                     ?>
                     <div class="form-floating" style="width:calc(100% - 50px);">
-                        <input type="text" name="name" id="name" class="form-control form-text-group-adapt" placeholder="<?=$Dic['Full Name of Company']?>" aria-label="<?=$Dic['Full Name of Company']?>" value="<?=$d->name?>">
-                        <label for="name"><?=$Dic['Name']?>*</label>
+                        <input type="text" name="nome" id="nome" class="form-control form-text-group-adapt" placeholder="<?=$Dic['Full Name of Company']?>" aria-label="<?=$Dic['Full Name of Company']?>" value="<?=$d->nome?>">
+                        <label for="nome"><?=$Dic['Name']?>*</label>
                     </div>
                     <button class="btn btn-secondary btn-group-adapt" type="button" id="button-addon2">
                         <input type="file" class="attachment" target="logo" accept="image/*,application/pdf">
@@ -124,96 +103,40 @@
                     </button>
                 </div>
 
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cpf_cnpj" name="cpf_cnpj" placeholder="<?=$Dic['Commercial Record']?>" value="<?=$d->cpf_cnpj?>">
+                    <label for="cpf_cnpj"><?=$Dic['Commercial Record']?>*</label>
+                </div>                
+
 
                 <div class="form-floating mb-3">
-                    <select name="state" class="form-control" id="state">
+                    <select name="estado" class="form-control" id="estado">
                         <option value="" >::<?=$Dic['Selection']?>::</option>
                         <?php
-                        $q = "select * from states order by state";
+                        $q = "select * from estados order by nome";
                         $r = mysqli_query($con, $q);
                         while($s = mysqli_fetch_object($r)){
                         ?>
-                        <option value="<?=$s->id?>" <?=(($s->id == $d->state)?'selected':false)?>><?=$s->state?></option>
+                        <option value="<?=$s->codigo?>" <?=(($s->codigo == $d->estado)?'selected':false)?>><?=$s->nome?></option>
                         <?php
                         }
                         ?>
                     </select>
-                    <label for="state"><?=$Dic['State']?></label>
+                    <label for="estado"><?=$Dic['State']?></label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="addres" name="addres" placeholder="<?=$Dic['Addres']?>" value="<?=$d->addres?>">
-                    <label for="addres"><?=$Dic['Addres']?>*</label>
-                </div>
-
-                <div class="input-group mb-3">
-                <?php
-                    if($d->contributor_tax_attachment){
-                    ?>
-                    <div class="imageView"><div><i class="fa-solid fa-trash"></i></div><object data="src/volume/<?=$d->id?>/<?=$d->contributor_tax_attachment?>"></object></div>
-                    <?php
-                    }
-                    ?>
-                    <div class="form-floating" style="width:calc(100% - 50px);">
-                        <input type="text" name="contributor_tax" id="contributor_tax" class="form-control form-text-group-adapt" placeholder="<?=$Dic['Contributor Tax']?>" aria-label="<?=$Dic['Contributor Tax']?>" value="<?=$d->contributor_tax?>">
-                        <label for="contributor_tax"><?=$Dic['Contributor Tax']?>*</label>
-                    </div>
-                    <button class="btn btn-secondary btn-group-adapt" type="button" id="button-addon2">
-                        <input type="file" class="attachment" target="contributor_tax_attachment" accept="image/*,application/pdf">
-                        <input attachment type="hidden" id="contributor_tax_attachment" base64_image="" name_image="" type_image="" atual_image="<?=$d->contributor_tax_attachment?>">
-                        <i class="fa-solid fa-paperclip"></i>
-                    </button>
-                </div>
-
-                <div class="input-group mb-3">
-                    <?php
-                    if($d->commercial_record_attachment){
-                    ?>
-                    <div class="imageView"><div><i class="fa-solid fa-trash"></i></div><object data="src/volume/<?=$d->id?>/<?=$d->commercial_record_attachment?>"></object></div>
-                    <?php
-                    }
-                    ?>
-                    <div class="form-floating" style="width:calc(100% - 50px);">
-                        <input type="text" name="commercial_record" id="commercial_record" class="form-control form-text-group-adapt" placeholder="<?=$Dic['Commercial Record']?>" aria-label="<?=$Dic['Commercial Record']?>" value="<?=$d->commercial_record?>">
-                        <label for="commercial_record"><?=$Dic['Commercial Record']?>*</label>
-                    </div>
-                    <button class="btn btn-secondary btn-group-adapt" type="button" id="button-addon2">
-                        <input type="file" class="attachment" target="commercial_record_attachment" accept="image/*,application/pdf">
-                        <input attachment type="hidden" id="commercial_record_attachment" base64_image="" name_image="" type_image="" atual_image="<?=$d->commercial_record_attachment?>">
-                        <i class="fa-solid fa-paperclip"></i>
-                    </button>
-                </div>
-
-                <div class="input-group mb-3">
-                    <?php
-                    if($d->bank_account_attachment){
-                    ?>
-                    <div class="imageView"><div><i class="fa-solid fa-trash"></i></div><object data="src/volume/<?=$d->id?>/<?=$d->bank_account_attachment?>"></object></div>
-                    <?php
-                    }
-                    ?>
-                    <div class="form-floating" style="width:calc(50% - 50px);">
-                        <input type="text" name="bank_name" id="bank_name" class="form-control form-text-group-adapt" placeholder="<?=$Dic['Bank Name']?>" aria-label="<?=$Dic['Bank Name']?>" value="<?=$d->bank_name?>">
-                        <label for="bank_name"><?=$Dic['Bank Name']?>*</label>
-                    </div>
-                    <div class="form-floating" style="width:50%;">
-                        <input type="text" name="bank_account" id="bank_account" class="form-control form-text-group-adapt-between" placeholder="<?=$Dic['Bank Account']?>" aria-label="<?=$Dic['Bank Account']?>" value="<?=$d->bank_account?>">
-                        <label for="bank_account"><?=$Dic['Bank Account']?>*</label>
-                    </div>
-                    <button class="btn btn-secondary btn-group-adapt" type="button" id="button-addon2">
-                        <input type="file" class="attachment" target="bank_account_attachment" accept="image/*,application/pdf">
-                        <input attachment type="hidden" id="bank_account_attachment" base64_image="" name_image="" type_image="" atual_image="<?=$d->bank_account_attachment?>">
-                        <i class="fa-solid fa-paperclip"></i>
-                    </button>
-                </div>
-
-                <div class="form-floating mb-3">
-                    <input type="text" name="responsible_name" id="responsible_name" class="form-control" placeholder="<?=$Dic['Responsiblety Name']?>" value="<?=$d->responsible_name?>">
-                    <label for="responsible_name"><?=$Dic['Responsiblety Name']?></label>
+                    <input type="text" class="form-control" id="endereco" name="endereco" placeholder="<?=$Dic['Addres']?>" value="<?=$d->endereco?>">
+                    <label for="endereco"><?=$Dic['Addres']?>*</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" name="responsible_phone" id="responsible_phone" class="form-control" placeholder="<?=$Dic['Responsiblety Phone']?>" value="<?=$d->responsible_phone?>">
-                    <label for="responsible_phone"><?=$Dic['Responsiblety Phone']?></label>
+                    <input type="text" class="form-control" id="local" name="local" placeholder="<?=$Dic['Addres']?>" value="<?=$d->local?>">
+                    <label for="local"><?=$Dic['Addres']?> (Local)*</label>
                 </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="complemento" name="complemento" placeholder="<?=$Dic['Addres']?>" value="<?=$d->complemento?>">
+                    <label for="complemento"><?=$Dic['Addres']?> (complemento)*</label>
+                </div>
+
                 <div class="form-floating mb-3">
                     <select name="status" class="form-control" id="status">
                         <option value="1" <?=(($d->status == '1')?'selected':false)?>><?=$Dic['Allowed']?></option>
@@ -229,7 +152,7 @@
             <div class="col">
                 <div style="display:flex; justify-content:end">
                     <button type="submit" class="btn btn-success btn-ms"><?=$Dic['Save']?></button>
-                    <input type="hidden" id="id" value="<?=$_POST['id']?>" />
+                    <input type="hidden" id="codigo" value="<?=$_POST['codigo']?>" />
                 </div>
             </div>
         </div>
@@ -238,8 +161,6 @@
     <script>
         $(function(){
             Carregando('none');
-
-            $("#responsible_phone").mask("299999999999");
 
             if (window.File && window.FileList && window.FileReader) {
 
