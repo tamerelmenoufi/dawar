@@ -1,6 +1,6 @@
 <?php
   
-    include("../../lib/includes.php");
+  include("{$_SERVER['DOCUMENT_ROOT']}/dawar/painel/lib/includes.php");
     $con = AppConnect('dawar');
     $conApi = AppConnect('information_schema');
 
