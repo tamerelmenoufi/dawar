@@ -244,9 +244,10 @@
                     }
 
                 },
-                error:function(){
+                error:function(error){
+                    console.log(error)
                     $.alert({
-                        content:'<?=$Dic['An error occurred.<br>Please check login address. Erro aqui']?>',
+                        content:'<?=$Dic['An error occurred.<br>Please check login address.']?> Erro aqui',
                         title:false,
                         buttons:{
                             '<?=$Dic['ok']?>':function(){
