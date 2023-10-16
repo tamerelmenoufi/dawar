@@ -232,7 +232,7 @@
                         window.location.href='./';
                     }else{
                         $.alert({
-                            content:'<?=$Dic['An error occurred.<br>Please check your login details.']?> comndo de erro!',
+                            content:'<?=$Dic['An error occurred.<br>Please check your login details.']?>',
                             title:false,
                             buttons:{
                                 '<?=$Dic['ok']?>':function(){
@@ -246,7 +246,7 @@
                 },
                 error:function(){
                     $.alert({
-                        content:'<?=$Dic['An error occurred.<br>Please check login address.']?>',
+                        content:'<?=$Dic['An error occurred.<br>Please check login address. Erro aqui']?>',
                         title:false,
                         buttons:{
                             '<?=$Dic['ok']?>':function(){
