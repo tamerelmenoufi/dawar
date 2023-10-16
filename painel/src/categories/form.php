@@ -7,7 +7,7 @@
         $data = $_POST;
         $attr = [];
 
-        unset($data['id']);
+        unset($data['codigo']);
         unset($data['action']);
 
         foreach ($data as $name => $value) {
@@ -17,19 +17,19 @@
 
         $attr = implode(', ', $attr);
 
-        if($_POST['id']){
-            $query = "update categories set {$attr} where id = '{$_POST['id']}'";
+        if($_POST['codigo']){
+            $query = "update aux_categorias set {$attr} where codigo = '{$_POST['codigo']}'";
             mysqli_query($con, $query);
-            $id = $_POST['id'];
+            $codigo = $_POST['codigo'];
         }else{
-            $query = "insert into categories set {$attr}";
+            $query = "insert into aux_categorias set {$attr}";
             mysqli_query($con, $query);
-            $id = mysqli_insert_id($con);
+            $codigo = mysqli_insert_id($con);
         }
 
         $return = [
             'status' => true,
-            'id' => $id." - ".$query
+            'codigo' => $codigo." - ".$query
         ];
 
         echo json_encode($return);
@@ -38,7 +38,7 @@
     }
 
 
-    $query = "select * from categories where id = '{$_POST['id']}'";
+    $query = "select * from aux_categorias where codigo = '{$_POST['codigo']}'";
     $result = mysqli_query($con, $query);
     $d = mysqli_fetch_object($result);
 ?>
@@ -55,15 +55,15 @@
         <div class="row">
             <div class="col">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="category" name="category" placeholder="Category" value="<?=$d->category?>">
+                    <input type="text" class="form-control" id="nome" name="nome" placeholder="nome" value="<?=$d->nome?>">
                     <label for="nome"><?=$Dic['Category']?>*</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <select name="status" class="form-control" id="status">
+                    <select name="situacao" class="form-control" id="situacao">
                         <option value="1" <?=(($d->status == '1')?'selected':false)?>><?=$Dic['Allowed']?></option>
                         <option value="0" <?=(($d->status == '0')?'selected':false)?>><?=$Dic['Blocked']?></option>
                     </select>
-                    <label for="email"><?=$Dic['Status']?></label>
+                    <label for="situacao"><?=$Dic['Status']?></label>
                 </div>
             </div>
         </div>
