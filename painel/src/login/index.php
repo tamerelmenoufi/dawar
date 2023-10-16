@@ -5,7 +5,7 @@
         $login = $_POST['login'];
         $password = md5($_POST['password']);
 
-        $query = "select * from users where login = '{$login}' and password = '{$password}'";
+        $query = "select * from usuarios where login = '{$login}' and senha = '{$password}'";
         $result = mysqli_query($con, $query);
 
         if(mysqli_num_rows($result)){
@@ -13,7 +13,7 @@
             $_SESSION['ProjectPainel'] = $d;
             $retorno = [
                 'sucesso' => true,
-                'ProjectPanel' => $d->id,
+                'ProjectPanel' => $d->codigo,
                 'Connected' => $_POST['MaterConnectado'],
                 'msg' => 'Login Successful',
             ];
