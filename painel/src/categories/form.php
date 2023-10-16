@@ -60,8 +60,8 @@
                 </div>
                 <div class="form-floating mb-3">
                     <select name="situacao" class="form-control" id="situacao">
-                        <option value="1" <?=(($d->status == '1')?'selected':false)?>><?=$Dic['Allowed']?></option>
-                        <option value="0" <?=(($d->status == '0')?'selected':false)?>><?=$Dic['Blocked']?></option>
+                        <option value="1" <?=(($d->situacao == '1')?'selected':false)?>><?=$Dic['Allowed']?></option>
+                        <option value="0" <?=(($d->situacao == '0')?'selected':false)?>><?=$Dic['Blocked']?></option>
                     </select>
                     <label for="situacao"><?=$Dic['Status']?></label>
                 </div>
