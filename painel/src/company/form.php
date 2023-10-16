@@ -113,7 +113,7 @@
                     <select name="estado" class="form-control" id="estado">
                         <option value="" >::<?=$Dic['Selection']?>::</option>
                         <?php
-                        $q = "select * from estados order by nome";
+                        $q = "select * from aux_estados order by nome";
                         $r = mysqli_query($con, $q);
                         while($s = mysqli_fetch_object($r)){
                         ?>
