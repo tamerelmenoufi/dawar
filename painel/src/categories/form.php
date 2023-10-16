@@ -104,7 +104,7 @@
                     mimeType: 'multipart/form-data',
                     data: filds,
                     success:function(dados){
-                        console.log(dados);
+                        // console.log(dados);
                         // if(dados.status){
                             $.ajax({
                                 url:"src/categories/index.php",
