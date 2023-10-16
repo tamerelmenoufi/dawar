@@ -63,7 +63,7 @@
                     >
                       <?=$Dic['Edit']?>
                     </button>
-                    <button class="btn btn-danger" delete="<?=$d->id?>">
+                    <button class="btn btn-danger" delete="<?=$d->codigo?>">
                       <?=$Dic['Delete']?>
                     </button>
                   </td>
