@@ -72,7 +72,7 @@
             <div class="col">
                 <div style="display:flex; justify-content:end">
                     <button type="submit" class="btn btn-success btn-ms"><?=$Dic['Save']?></button>
-                    <input type="hidden" id="id" value="<?=$_POST['id']?>" />
+                    <input type="hidden" id="codigo" value="<?=$_POST['codigo']?>" />
                 </div>
             </div>
         </div>
