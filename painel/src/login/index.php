@@ -226,7 +226,7 @@
                 success:function(data){
                     // let retorno = JSON.parse(dados);
                     // $.alert(dados.sucesso);
-                    console.log(data.ProjectPanel);
+                    console.log(data);
                     if(data.ProjectPanel > 0){
                         window.location.href='./';
                     }else{
