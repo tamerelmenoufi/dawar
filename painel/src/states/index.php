@@ -2,7 +2,7 @@
         include("{$_SERVER['DOCUMENT_ROOT']}/dawar/painel/lib/includes.php");
 
     if($_POST['delete']){
-      $query = "delete from states where id = '{$_POST['delete']}'";
+      $query = "delete from aux_estados where codigo = '{$_POST['delete']}'";
       mysqli_query($con, $query);
     }
 
@@ -45,17 +45,17 @@
               </thead>
               <tbody>
                 <?php
-                  $query = "select * from states order by state asc";
+                  $query = "select * from aux_estados order by nome asc";
                   $result = mysqli_query($con, $query);
                   while($d = mysqli_fetch_object($result)){
                 ?>
                 <tr>
-                  <td class="w-100"><?=$d->state?></td>
+                  <td class="w-100"><?=$d->nome?></td>
                   <td class="text-end">
                     <button
                       class="btn btn-primary"
                       style="margin-bottom:1px"
-                      edit="<?=$d->id?>"
+                      edit="<?=$d->codigo?>"
                       data-bs-toggle="offcanvas"
                       href="#offcanvasRight"
                       role="button"
@@ -96,12 +96,12 @@
         })
 
         $("button[edit]").click(function(){
-            id = $(this).attr("edit");
+            codigo = $(this).attr("edit");
             $.ajax({
                 url:"src/states/form.php",
                 type:"POST",
                 data:{
-                  id
+                  codigo
                 },
                 success:function(dados){
                     $(".MenuRight").html(dados);

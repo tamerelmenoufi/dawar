@@ -17,19 +17,19 @@
 
         $attr = implode(', ', $attr);
 
-        if($_POST['id']){
-            $query = "update states set {$attr} where id = '{$_POST['id']}'";
+        if($_POST['codigo']){
+            $query = "update aux_estados set {$attr} where codigo = '{$_POST['codigo']}'";
             mysqli_query($con, $query);
-            $id = $_POST['id'];
+            $codigo = $_POST['codigo'];
         }else{
-            $query = "insert into states set {$attr}";
+            $query = "insert into aux_estados set {$attr}";
             mysqli_query($con, $query);
-            $id = mysqli_insert_id($con);
+            $codigo = mysqli_insert_id($con);
         }
 
         $return = [
             'status' => true,
-            'id' => $id." - ".$query
+            'codigo' => $codigo." - ".$query
         ];
 
         echo json_encode($return);
@@ -38,7 +38,7 @@
     }
 
 
-    $query = "select * from states where id = '{$_POST['id']}'";
+    $query = "select * from aux_estados where codigo = '{$_POST['codigo']}'";
     $result = mysqli_query($con, $query);
     $d = mysqli_fetch_object($result);
 ?>
@@ -55,8 +55,8 @@
         <div class="row">
             <div class="col">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="state" name="state" placeholder="<?=$Dic['State']?>" value="<?=$d->state?>">
-                    <label for="state"><?=$Dic['State']?>*</label>
+                    <input type="text" class="form-control" id="nome" name="nome" placeholder="<?=$Dic['State']?>" value="<?=$d->nome?>">
+                    <label for="nome"><?=$Dic['State']?>*</label>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
             <div class="col">
                 <div style="display:flex; justify-content:end">
                     <button type="submit" class="btn btn-success btn-ms"><?=$Dic['Save']?></button>
-                    <input type="hidden" id="id" value="<?=$_POST['id']?>" />
+                    <input type="hidden" id="codigo" value="<?=$_POST['codigo']?>" />
                 </div>
             </div>
         </div>
@@ -79,11 +79,11 @@
 
                 e.preventDefault();
 
-                var id = $('#id').val();
+                var codigo = $('#codigo').val();
                 var filds = $(this).serializeArray();
 
-                if (id) {
-                    filds.push({name: 'id', value: id})
+                if (codigo) {
+                    filds.push({name: 'codigo', value: codigo})
                 }
 
                 filds.push({name: 'action', value: 'save'})
