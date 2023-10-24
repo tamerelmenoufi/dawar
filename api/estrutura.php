@@ -4,7 +4,19 @@
     $con = AppConnect('dawar');
     $conApi = AppConnect('information_schema');
 
-    $query = "SELECT * FROM `COLUMNS` where TABLE_SCHEMA = 'dawar' and COLUMN_NAME != 'codigo' order by TABLE_NAME";
+    $sendData = [
+        'aux_categorias',
+        'aux_estados',
+        'empresas',
+        'produtos',
+    ];
+
+    $ignoreTables = [
+        'usuarios',
+    ];
+
+
+    $query = "SELECT * FROM `COLUMNS` where TABLE_SCHEMA = 'dawar' and COLUMN_NAME != 'codigo' ".(($ignoreTables)?" and TABLE_NAME NOT IN ('".implode("' ,'", $ignoreTables)."') ")." order by TABLE_NAME";
     $result = mysqli_query($conApi, $query);
     while($d = mysqli_fetch_object($result)){
         $Comando[$d->TABLE_NAME][] = $d->COLUMN_NAME;
@@ -24,18 +36,20 @@
         // $Cmd[] = ['comando' => "DROP TABLE {$ind}"];
         $Cmd[] = ['comando' => $cmd];
 
-        $query = "select * from {$ind} limit 1000";
-        $result = mysqli_query($con, $query);
-        while($d = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-            $D = [];
-            foreach($d as $i => $v){
-                if($tipo[$ind][$i] == 'bigint' or $i == 'codigo'){
-                    $D[] = str_replace("'", "`", $v);
-                }else{
-                    $D[] = "'".str_replace("'", "`", $v)."'";
+        if(in_array($ind, $sendData)){
+            $query = "select * from {$ind} limit 1000";
+            $result = mysqli_query($con, $query);
+            while($d = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+                $D = [];
+                foreach($d as $i => $v){
+                    if($tipo[$ind][$i] == 'bigint' or $i == 'codigo'){
+                        $D[] = str_replace("'", "`", $v);
+                    }else{
+                        $D[] = "'".str_replace("'", "`", $v)."'";
+                    }
                 }
+                $Cmd[] = ['comando' => "REPLACE INTO $ind (codigo, ".implode(", ", $campos).") VALUES (".implode(", ",$D).")"];
             }
-            $Cmd[] = ['comando' => "REPLACE INTO $ind (codigo, ".implode(", ", $campos).") VALUES (".implode(", ",$D).")"];
         }
 
     }
