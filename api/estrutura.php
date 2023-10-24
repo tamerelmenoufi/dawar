@@ -16,7 +16,7 @@
     ];
 
 
-    $query = "SELECT * FROM `COLUMNS` where TABLE_SCHEMA = 'dawar' and COLUMN_NAME != 'codigo' ".(($ignoreTables)?" and TABLE_NAME NOT IN ('".implode("' ,'", $ignoreTables)."') ")." order by TABLE_NAME";
+    $query = "SELECT * FROM `COLUMNS` where TABLE_SCHEMA = 'dawar' and COLUMN_NAME != 'codigo' ".(($ignoreTables)?" and TABLE_NAME NOT IN ('".implode("' ,'", $ignoreTables)."') ":false)." order by TABLE_NAME";
     $result = mysqli_query($conApi, $query);
     while($d = mysqli_fetch_object($result)){
         $Comando[$d->TABLE_NAME][] = $d->COLUMN_NAME;
