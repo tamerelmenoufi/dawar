@@ -39,7 +39,7 @@
         if(in_array($ind, $sendData)){
             $query = "select * from {$ind} limit 1000";
             $result = mysqli_query($con, $query);
-            while($d = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            while($d = mysqli_fetch_array($result, MYSQLIsendData_ASSOC)){
                 $D = [];
                 foreach($d as $i => $v){
                     if($tipo[$ind][$i] == 'bigint' or $i == 'codigo'){
