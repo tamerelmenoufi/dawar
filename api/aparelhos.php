@@ -10,4 +10,4 @@
     $query = "REPLACE INTO aparelhos set unicoId = '{$_POST['id']}', nome = '{$_POST['nome']}', telefone = '{$_POST['telefone']}'";
     $result = mysqli_query($con, $query);
 
-    echo json_encode(['status' => $query]);
+    echo json_encode(['status' => 'Success']);
