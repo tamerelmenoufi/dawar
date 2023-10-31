@@ -7,8 +7,7 @@
     $_POST = json_decode(file_get_contents('php://input'), true);
     
 
-    $query = "INSERT INTO  aparelhos set unicoId = '{$_POST['id']}', nome = '{$_POST['nome']}', telefone = '{$_POST['telefone']}'";
+    $query = "INSERT INTO aparelhos set unicoId = '{$_POST['id']}', nome = '{$_POST['nome']}', telefone = '{$_POST['telefone']}'";
     $result = mysqli_query($con, $query);
-
 
     echo json_encode(['status' => 'Success']);
